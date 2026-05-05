@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Visitor Pass Generator</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .form {
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input {
+      padding: 8px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px 15px;
+      margin-top: 10px;
+      margin-right: 10px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* A4 */
+    @page {
+      size: A4;
+      margin: 0;
+      padding: 0;
+    }
+
+    #pages {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .a4 {
+      width: 21cm;
+      height: 29.7cm;
+      display: grid;
+      grid-template-columns: repeat(2, 8.5cm);
+      grid-template-rows: repeat(2, 12cm);
+      gap: 0.8cm;
+      padding: 1cm;
+      justify-content: center;
+      align-content: center;
+      page-break-after: always;
+      box-sizing: border-box;
+    }
+
+    .card {
+      width: 8.5cm;
+      height: 12cm;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    /* Background desain */
+    .bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    /* Text */
+    .text {
+      position: absolute;
+      z-index: 2;
+      font-weight: bold;
+      text-align: center;
+      width: 90%;
+      left: 5%;
+      word-wrap: break-word;
+    }
+
+    /* Nomor - di kolom biru */
+    .number {
+      top: 59%;
+      color: white;
+      font-size: 18px;
+    }
+
+    /* Nama perusahaan - dibawah nomor */
+    .company {
+      top: 72%;
+      color: black;
+      font-size: 18px;
+    }
+
+    /* Tanggal */
+    .date {
+      top: 85%;
+      color: black;
+      font-size: 18px;
+    }
+
+    @media print {
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      body * {
+        visibility: hidden;
+      }
+
+      #pages, #pages * {
+        visibility: visible;
+      }
+
+      #pages {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .a4 {
+        position: relative;
+        width: 21cm;
+        height: 29.7cm;
+        margin: 0;
+        padding: 1cm;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="form">
+    <h2>PAS VISITOR UPBU JUWATA</h2>
+
+    <div class="form-group">
+      <label for="company">NAMA PERUSAHAAN</label>
+      <input type="text" id="company" placeholder="Masukkan nama perusahaan">
+    </div>
+
+    <div class="form-group">
+      <label for="start">TANGGAL MULAI</label>
+      <input type="date" id="start">
+    </div>
+
+    <div class="form-group">
+      <label for="end">TANGGAL BERAKHIR</label>
+      <input type="date" id="end">
+    </div>
+
+    <div class="form-group">
+      <label for="jumlah">JUMLAH VISITOR</label>
+      <input type="number" id="jumlah" placeholder="Jumlah Visitor (max 32)" min="1" max="32">
+    </div>
+
+    <div class="form-group">
+      <label for="startNumber">NOMOR VISITOR</label>
+      <input type="number" id="startNumber" placeholder="Nomor Awal" value="1">
+    </div>
+
+    <button onclick="generate()">Generate</button>
+    <button onclick="window.print()">Print</button>
+  </div>
+
+  <div id="pages"></div>
+
+  <script>
+    function formatDate(dateString) {
+      if (!dateString) return '';
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`;
+    }
+
+    function generate() {
+      const company = document.getElementById('company').value;
+      const start = document.getElementById('start').value;
+      const end = document.getElementById('end').value;
+      const jumlah = parseInt(document.getElementById('jumlah').value);
+      let nomor = parseInt(document.getElementById('startNumber').value);
+
+      const pages = document.getElementById('pages');
+      pages.innerHTML = '';
+
+      let currentPage;
+
+      const startFormatted = formatDate(start);
+      const endFormatted = formatDate(end);
+
+      for (let i = 0; i < jumlah; i++) {
+        // Setiap 4 kartu = 1 halaman baru (2x2 grid)
+        if (i % 4 === 0) {
+          currentPage = document.createElement('div');
+          currentPage.className = 'a4';
+          pages.appendChild(currentPage);
+        }
+
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const numberText = `UPBU.JWT.${String(nomor).padStart(3, '0')}`;
+
+        card.innerHTML = `
+          <img src="design.png" class="bg">
+          <div class="text number">${numberText}</div>
+          <div class="text company">${company}</div>
+          <div class="text date">${startFormatted} s/d ${endFormatted}</div>
+        `;
+
+        currentPage.appendChild(card);
+        nomor++;
+      }
+    }
+  </script>
+
+</body>
+</html>
