@@ -5,51 +5,201 @@
   <title>PAS VISITOR UPBU JUWATA</title>
 
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
+      box-sizing: border-box;
     }
 
-    .form {
+    html, body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       padding: 20px;
     }
 
+    /* Container dengan background shapes */
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+      width: 100%;
+      padding: 50px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative shapes - background */
+    .shape-top-left {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      top: -50px;
+      left: -50px;
+      opacity: 0.1;
+    }
+
+    .shape-bottom-right {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      bottom: -80px;
+      right: -80px;
+      opacity: 0.1;
+    }
+
+    .shape-accent {
+      position: absolute;
+      width: 4px;
+      height: 50px;
+      background: linear-gradient(180deg, #667eea 0%, transparent 100%);
+      top: 30px;
+      left: 30px;
+      border-radius: 4px;
+    }
+
+    .shape-accent-right {
+      position: absolute;
+      width: 4px;
+      height: 50px;
+      background: linear-gradient(180deg, #764ba2 0%, transparent 100%);
+      top: 30px;
+      right: 30px;
+      border-radius: 4px;
+    }
+
+    /* Header section */
+    .header {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      color: #333;
+      margin-bottom: 10px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: #999;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      margin: 15px auto;
+      border-radius: 3px;
+    }
+
+    /* Form section */
+    .form {
+      position: relative;
+      z-index: 2;
+    }
+
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 25px;
     }
 
     .form-group label {
       display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      font-size: 14px;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     input {
-      padding: 8px;
-      width: 250px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      background-color: #f8f9ff;
+    }
+
+    input::placeholder {
+      color: #ccc;
+    }
+
+    /* Button group */
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 35px;
+      justify-content: center;
     }
 
     button {
-      padding: 10px 15px;
-      margin-top: 10px;
-      margin-right: 10px;
+      flex: 1;
+      padding: 13px 20px;
       cursor: pointer;
-      background-color: #007bff;
-      color: white;
       border: none;
-      border-radius: 4px;
-      font-weight: bold;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      text-align: center;
     }
 
-    button:hover {
-      background-color: #0056b3;
+    .btn-generate {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
     }
 
-    /* A4 */
+    .btn-generate:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-generate:active {
+      transform: translateY(0);
+    }
+
+    .btn-print {
+      background: white;
+      color: #667eea;
+      border: 2px solid #667eea;
+    }
+
+    .btn-print:hover {
+      background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+    }
+
+    /* A4 Print section */
     @page {
       size: A4;
       margin: 0;
@@ -83,7 +233,6 @@
       flex-shrink: 0;
     }
 
-    /* Background desain */
     .bg {
       position: absolute;
       width: 100%;
@@ -94,7 +243,6 @@
       z-index: 1;
     }
 
-    /* Text */
     .text {
       position: absolute;
       z-index: 2;
@@ -105,21 +253,18 @@
       word-wrap: break-word;
     }
 
-    /* Nomor - di kolom biru */
     .number {
-      top: 59%;
+      top: 58%;
       color: white;
       font-size: 18px;
     }
 
-    /* Nama perusahaan - dibawah nomor */
     .company {
       top: 72%;
       color: black;
       font-size: 18px;
     }
 
-    /* Tanggal */
     .date {
       top: 85%;
       color: black;
@@ -132,6 +277,7 @@
         padding: 0;
         width: 100%;
         height: 100%;
+        background: white;
       }
 
       body * {
@@ -159,41 +305,66 @@
         padding: 1cm;
       }
     }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .container {
+        padding: 40px 25px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 
 <body>
 
-  <div class="form">
-    <h2>PAS VISITOR UPBU JUWATA</h2>
+  <div class="container">
+    <!-- Decorative shapes -->
+    <div class="shape-top-left"></div>
+    <div class="shape-bottom-right"></div>
+    <div class="shape-accent"></div>
+    <div class="shape-accent-right"></div>
 
-    <div class="form-group">
-      <label for="company">NAMA PERUSAHAAN</label>
-      <input type="text" id="company" placeholder="Masukkan nama perusahaan">
+    <!-- Header -->
+    <div class="header">
+      <h1>PAS VISITOR UPBU JUWATA</h1>
+      <div class="divider"></div>
     </div>
 
-    <div class="form-group">
-      <label for="start">TANGGAL MULAI</label>
-      <input type="date" id="start">
-    </div>
+    <!-- Form -->
+    <div class="form">
+      <div class="form-group">
+        <label for="company">Nama Perusahaan</label>
+        <input type="text" id="company" placeholder="Masukkan nama perusahaan">
+      </div>
 
-    <div class="form-group">
-      <label for="end">TANGGAL BERAKHIR</label>
-      <input type="date" id="end">
-    </div>
+      <div class="form-group">
+        <label for="end">Tanggal Berakhir</label>
+        <input type="date" id="end">
+      </div>
 
-    <div class="form-group">
-      <label for="jumlah">JUMLAH VISITOR</label>
-      <input type="number" id="jumlah" placeholder="Jumlah Visitor (max 32)" min="1" max="32">
-    </div>
+      <div class="form-group">
+        <label for="jumlah">Jumlah Visitor</label>
+        <input type="number" id="jumlah" placeholder="Jumlah Visitor (max 32)" min="1" max="32">
+      </div>
 
-    <div class="form-group">
-      <label for="startNumber">NOMOR VISITOR</label>
-      <input type="number" id="startNumber" placeholder="Nomor Awal" value="1">
-    </div>
+      <div class="form-group">
+        <label for="startNumber">Nomor Visitor Awal</label>
+        <input type="number" id="startNumber" placeholder="Nomor Awal" value="1">
+      </div>
 
-    <button onclick="generate()">Generate</button>
-    <button onclick="window.print()">Print</button>
+      <div class="button-group">
+        <button class="btn-generate" onclick="generate()">Generate</button>
+        <button class="btn-print" onclick="window.print()">Print</button>
+      </div>
+    </div>
   </div>
 
   <div id="pages"></div>
@@ -205,12 +376,11 @@
       const day = String(date.getDate()).padStart(2, '0');
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const year = date.getFullYear();
-      return `${day}-${month}-${year}`;
+      return `s.d ${day}-${month}-${year}`;
     }
 
     function generate() {
       const company = document.getElementById('company').value;
-      const start = document.getElementById('start').value;
       const end = document.getElementById('end').value;
       const jumlah = parseInt(document.getElementById('jumlah').value);
       let nomor = parseInt(document.getElementById('startNumber').value);
@@ -220,11 +390,9 @@
 
       let currentPage;
 
-      const startFormatted = formatDate(start);
       const endFormatted = formatDate(end);
 
       for (let i = 0; i < jumlah; i++) {
-        // Setiap 4 kartu = 1 halaman baru (2x2 grid)
         if (i % 4 === 0) {
           currentPage = document.createElement('div');
           currentPage.className = 'a4';
@@ -240,7 +408,7 @@
           <img src="design.png" class="bg">
           <div class="text number">${numberText}</div>
           <div class="text company">${company}</div>
-          <div class="text date">${startFormatted} s/d ${endFormatted}</div>
+          <div class="text date">${endFormatted}</div>
         `;
 
         currentPage.appendChild(card);
